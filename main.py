@@ -1,6 +1,7 @@
 import math
 import pygame 
 import numpy as np
+import random
 
 pygame.init()
 
@@ -25,15 +26,24 @@ planeta = np.array([pos[0]-500, pos[1]-364])
 personagem = pygame.Surface((10, 10))  # Tamanho do personagem
 personagem.fill(COR_PERSONAGEM)  # Cor do personagem
 
+#detector de colisão
+inimigo_morto = True
+
 rodando = True
 while rodando:
     # Capturar eventos
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             rodando = False
+    
+    if inimigo_morto == True:
+        posicao_inimigo = (random.randint(500, 1020), random.randint(100, 700))
+        inimigo_morto = False
+
 
     #evento so acontecer quando clicar com o mouse
     if event.type == pygame.MOUSEBUTTONDOWN:
+
         while True:
             if s[0]<0 or s[0]>1024 or s[1]<0 or s[1]>768: # Se eu chegar ao limite da tela, reinicio a posição do personagem
                 v0 = (pygame.mouse.get_pos() - s0)
@@ -43,7 +53,8 @@ while rodando:
                 break
 
             # Controlar frame rate
-            clock.tick(FPS)
+            clock.tick(FPS)          
+
 
             C = 20000 # constante gravitacional * massa planeta
             direcao_a = planeta - s
@@ -54,11 +65,6 @@ while rodando:
             v = v + a
             s = s + 0.25 * v
 
-
-            # # Processar posicoes
-            # v = v + a
-            # s = s + 0.1 * v
-
             # Desenhar fundo
             screen.fill(BLACK)
 
@@ -67,9 +73,11 @@ while rodando:
             screen.blit(personagem, rect)
             planet = pygame.draw.circle(screen, "red", planeta, 10, 10)
 
-            # Desenhar personagem
-            # rect = pygame.Rect(s, (10, 10))  # First tuple is position, second is size.
-            # screen.blit(personagem, rect)
+            if inimigo_morto == False:
+                inimigo = pygame.draw.circle(screen, "green", posicao_inimigo, 20, 20)
+
+            if inimigo.collidepoint(s):
+               inimigo_morto = True  
 
     # Update!
             pygame.display.update()
