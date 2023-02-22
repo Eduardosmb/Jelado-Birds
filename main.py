@@ -80,9 +80,7 @@ while rodando:
         if event.type == pygame.QUIT:
             rodando = False
     
-    if inimigo_morto == True:
-        posicao_inimigo = (random.randint(500, 1020), random.randint(100, 700))
-        inimigo_morto = False
+
 
 
     #evento so acontecer quando clicar com o mouse
@@ -117,10 +115,12 @@ while rodando:
             screen.blit(personagem, rect)
             planet = pygame.draw.circle(screen, "red", planeta, 10, 10)
 
+            if inimigo_morto == True:
+                posicao_inimigo = (random.randint(500, 1020), random.randint(100, 700))
+                inimigo_morto = False
             if inimigo_morto == False:
                 # screen.blit(inimigo, posicao_inimigo)
                 inimigo = pygame.draw.circle(screen, "green", posicao_inimigo, 20, 20)
-
 
             if inimigo.collidepoint(s):
                 inimigo_morto = True  
