@@ -46,7 +46,8 @@ rodando = True
 # inimigo.blit(barros, (0, 0))
 # inimigo.blit(circle_surface, (0, 0), special_flags=pygame.BLEND_RGBA_MIN)
 
-
+sorteador_planetas_1 = random.choice([barros, enzo]) 
+sorteador_inimigos = random.choice([ergio, guri, lucca, magno, vaz, wever, felipe_47, celao, alfredo])
 
 
 
@@ -113,7 +114,7 @@ while rodando:
 
             rect = pygame.Rect(s, (10, 10))  # First tuple is position, second is size.
             screen.blit(personagem, rect)
-            planet = pygame.draw.circle(screen, "red", planeta, 10, 10)
+            planet = pygame.draw.circle(screen, "red", planeta, 20, 20)
 
             if inimigo_morto == True:
                 posicao_inimigo = (random.randint(500, 1020), random.randint(100, 700))
@@ -121,11 +122,12 @@ while rodando:
             if inimigo_morto == False:
                 # screen.blit(inimigo, posicao_inimigo)
                 inimigo = pygame.draw.circle(screen, "green", posicao_inimigo, 20, 20)
+                screen.blit(ergio, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+
 
             if inimigo.collidepoint(s):
                 inimigo_morto = True  
                 pontuacao+=1
-                print(pontuacao)
 
     # Update!
               #blitando a pontuação na tela
@@ -133,6 +135,11 @@ while rodando:
             textRect = text.get_rect()
             textRect.center = (100, 100)
             screen.blit(text, textRect)
+
+            #blitando skins dos planetas
+
+            screen.blit(sorteador_planetas_1, ([pos[0]-525, pos[1]-390]))
+
             pygame.display.update()
 
 # Terminar tela
