@@ -80,8 +80,6 @@ while rodando:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             rodando = False
-    
-
 
 
     #evento so acontecer quando clicar com o mouse
@@ -117,12 +115,42 @@ while rodando:
             planet = pygame.draw.circle(screen, "red", planeta, 20, 20)
 
             if inimigo_morto == True:
+                #sorteia nova posição do inimigo
                 posicao_inimigo = (random.randint(500, 1020), random.randint(100, 700))
+
+                #sortea novo inimigo
+                sorteador_inimigos = random.choice([ergio, guri])
+
+                #declara estado do inimigo como vivo
                 inimigo_morto = False
+
             if inimigo_morto == False:
                 # screen.blit(inimigo, posicao_inimigo)
                 inimigo = pygame.draw.circle(screen, "green", posicao_inimigo, 20, 20)
-                screen.blit(ergio, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+
+                #feito
+                if sorteador_inimigos == ergio:
+                    screen.blit(ergio, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+
+                #fazendo
+                if sorteador_inimigos == guri:
+                    screen.blit(guri, (posicao_inimigo[0]-33, posicao_inimigo[1]-45))
+
+                if sorteador_inimigos == lucca:
+                    screen.blit(lucca, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                if sorteador_inimigos == magno:
+                    screen.blit(magno, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                if sorteador_inimigos == vaz:
+                    screen.blit(vaz, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                if sorteador_inimigos == wever:
+                    screen.blit(wever, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                if sorteador_inimigos == felipe_47:
+                    screen.blit(felipe_47, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                if sorteador_inimigos == celao:
+                    screen.blit(celao, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                if sorteador_inimigos == alfredo:
+                    screen.blit(alfredo, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                
 
 
             if inimigo.collidepoint(s):

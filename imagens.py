@@ -20,6 +20,7 @@ ergio = pygame.image.load('imagens/ergio.png')
 ergio = pygame.transform.scale(ergio, (58, 58))
 
 guri = pygame.image.load('imagens/guri.png')
+guri = pygame.transform.scale(guri, (65, 65))
 
 
 lucca = pygame.image.load('imagens/lucca.png')
@@ -30,4 +31,4 @@ vaz = pygame.image.load('imagens/vaz.png')
 
 wever = pygame.image.load('imagens/wever.png')
 
-felipe_47 = pygame.image.load('imagens/47.png') 
+felipe_47 = pygame.image.load('imagens/47.png')
