@@ -2,6 +2,7 @@ import math
 import pygame 
 import numpy as np
 import random
+from imagens import *
 
 pygame.init()
 
@@ -10,6 +11,12 @@ pos = np.array([1024,768])
 screen = pygame.display.set_mode(pos)
 clock = pygame.time.Clock()
 FPS = 60  # Frames per Second
+
+pontuacao = 0
+vida = 3
+
+#obtendo o fonte usada na pontuação
+font = pygame.font.SysFont(None, 30)
 
 BLACK = (0, 0, 0)
 COR_PERSONAGEM = (30, 200, 20)
@@ -30,7 +37,44 @@ personagem.fill(COR_PERSONAGEM)  # Cor do personagem
 inimigo_morto = True
 
 rodando = True
+
+
+
+# circle_surface = pygame.Surface(barros.get_size(), pygame.SRCALPHA)
+# mask = pygame.draw.circle(circle_surface, (0, 0, 0, 255), (barros.get_width() // 2, barros.get_height() // 2), barros.get_width() // 2)
+# inimigo = pygame.Surface(barros.get_size(), pygame.SRCALPHA)
+# inimigo.blit(barros, (0, 0))
+# inimigo.blit(circle_surface, (0, 0), special_flags=pygame.BLEND_RGBA_MIN)
+
+
+
+
+
+tela_jogo = True
+while tela_jogo:
+    screen.blit(jelado, (0, 0))
+    text = font.render('Jelado Wars', False, (0, 0, 0))
+    text_baixo = font.render('Escolha um personagem', False, (0, 0, 0))
+    textRect = text.get_rect()
+    screen.blit(text_baixo, (370,45))
+    textRect.center = (480, 30)
+    screen.blit(text, textRect)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            tela_jogo = False
+            rodando = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            tela_jogo = False
+            pygame.display.update()
+
+    pygame.display.update()
+
+
+
+
+
 while rodando:
+
     # Capturar eventos
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -66,7 +110,7 @@ while rodando:
             s = s + 0.25 * v
 
             # Desenhar fundo
-            screen.fill(BLACK)
+            screen.blit(background, (0, 0))
 
 
             rect = pygame.Rect(s, (10, 10))  # First tuple is position, second is size.
@@ -74,12 +118,21 @@ while rodando:
             planet = pygame.draw.circle(screen, "red", planeta, 10, 10)
 
             if inimigo_morto == False:
+                # screen.blit(inimigo, posicao_inimigo)
                 inimigo = pygame.draw.circle(screen, "green", posicao_inimigo, 20, 20)
 
+
             if inimigo.collidepoint(s):
-               inimigo_morto = True  
+                inimigo_morto = True  
+                pontuacao+=1
+                print(pontuacao)
 
     # Update!
+              #blitando a pontuação na tela
+            text = font.render('Pontos:' + str(pontuacao), False, (255,255,255))
+            textRect = text.get_rect()
+            textRect.center = (100, 100)
+            screen.blit(text, textRect)
             pygame.display.update()
 
 # Terminar tela
