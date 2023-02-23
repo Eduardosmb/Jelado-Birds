@@ -47,12 +47,18 @@ sorteador_inimigos = random.choice([ergio, guri, lucca, magno, vaz, wever, felip
 tela_jogo = True
 while tela_jogo:
     screen.blit(jelado, (0, 0))
+
+    pos_mouse = pygame.mouse.get_pos()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             tela_jogo = False
             rodando = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             tela_jogo = False
+            pygame.display.update()
+        if event.type == pygame.MOUSEBUTTONDOWN and pos_mouse[0]< 963 and pos_mouse[0]> 812 and pos_mouse[1]< 673 and pos_mouse[1]> 611:
+            tela_jogo = False
+            rodando = False
             pygame.display.update()
 
     pygame.display.update()
