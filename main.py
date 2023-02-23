@@ -13,8 +13,7 @@ clock = pygame.time.Clock()
 FPS = 60  # Frames per Second
 
 pontuacao = 0
-vida = 3
-
+tentativas = 5
 #obtendo o fonte usada na pontuação
 font = pygame.font.SysFont(None, 30)
 
@@ -40,12 +39,6 @@ rodando = True
 
 
 
-# circle_surface = pygame.Surface(barros.get_size(), pygame.SRCALPHA)
-# mask = pygame.draw.circle(circle_surface, (0, 0, 0, 255), (barros.get_width() // 2, barros.get_height() // 2), barros.get_width() // 2)
-# inimigo = pygame.Surface(barros.get_size(), pygame.SRCALPHA)
-# inimigo.blit(barros, (0, 0))
-# inimigo.blit(circle_surface, (0, 0), special_flags=pygame.BLEND_RGBA_MIN)
-
 sorteador_planetas_1 = random.choice([barros, enzo]) 
 sorteador_inimigos = random.choice([ergio, guri, lucca, magno, vaz, wever, felipe_47, celao, alfredo])
 
@@ -54,12 +47,6 @@ sorteador_inimigos = random.choice([ergio, guri, lucca, magno, vaz, wever, felip
 tela_jogo = True
 while tela_jogo:
     screen.blit(jelado, (0, 0))
-    text = font.render('Jelado Wars', False, (0, 0, 0))
-    text_baixo = font.render('Escolha um personagem', False, (0, 0, 0))
-    textRect = text.get_rect()
-    screen.blit(text_baixo, (370,45))
-    textRect.center = (480, 30)
-    screen.blit(text, textRect)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             tela_jogo = False
@@ -97,6 +84,11 @@ while rodando:
 
     #evento so acontecer quando clicar com o mouse
     if event.type == pygame.MOUSEBUTTONDOWN:
+
+        if tentativas < 2:
+            rodando = False
+        else:
+            tentativas -= 1
 
         while True:
             if s[0]<0 or s[0]>1024 or s[1]<0 or s[1]>768: # Se eu chegar ao limite da tela, reinicio a posição do personagem
@@ -167,16 +159,23 @@ while rodando:
                     screen.blit(alfredo, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
                 
 
-
+            
             if inimigo.collidepoint(s):
                 inimigo_morto = True  
                 pontuacao+=1
+                tentativas = 5
+                
+
 
             #blitando a pontuação na tela
             text = font.render('Pontos:' + str(pontuacao), False, (255,255,255))
             textRect = text.get_rect()
             textRect.center = (100, 100)
             screen.blit(text, textRect)
+            text_tentativas = font.render('Tentativas:' + str(tentativas), False, (255,255,255))
+            textRect_tentativas = text_tentativas.get_rect()
+            textRect_tentativas.center = (100, 150)
+            screen.blit(text_tentativas, textRect_tentativas)
 
             #blitando skins dos planetas
             screen.blit(sorteador_planetas_1, ([pos[0]-525, pos[1]-390]))
