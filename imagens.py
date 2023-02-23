@@ -3,6 +3,10 @@ import pygame
 background = pygame.image.load('imagens/galaxia.png')
 background = pygame.transform.scale(background, (1024, 768))
 
+canhao = pygame.image.load('imagens/canhao.png')
+canhao = pygame.transform.scale(canhao, (60, 60))
+canhao_rect = canhao.get_rect()
+
 jelado = pygame.image.load('imagens/jelado.png')
 jelado = pygame.transform.scale(jelado, (1024, 768))
 
