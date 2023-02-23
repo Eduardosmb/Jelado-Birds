@@ -12,7 +12,10 @@ screen = pygame.display.set_mode(pos)
 clock = pygame.time.Clock()
 FPS = 60  # Frames per Second
 
+
+#variável pra contar a pontuação do jogador
 pontuacao = 0
+#variável pra contar as tentativas do jogador
 tentativas = 5
 #obtendo o fonte usada na pontuação
 font = pygame.font.SysFont(None, 30)
@@ -34,16 +37,21 @@ personagem.fill(COR_PERSONAGEM)  # Cor do personagem
 
 #detector de colisão
 inimigo_morto = True
-
+#loop do jogo
 rodando = True
 
 
+#variáveis que definem se o jogo será no modo fácil ou difícil
+modo_facil = False
+modo_dificil = False
 
+
+#sorteia a foto dos personagens
 sorteador_planetas_1 = random.choice([barros, enzo]) 
 sorteador_inimigos = random.choice([ergio, guri, lucca, magno, vaz, wever, felipe_47, celao, alfredo])
 
 
-
+#loop da tela inicial
 tela_jogo = True
 while tela_jogo:
     screen.blit(jelado, (0, 0))
@@ -66,7 +74,7 @@ while tela_jogo:
 
 
 
-
+#loop do jogo
 while rodando:
 
     # Capturar eventos
