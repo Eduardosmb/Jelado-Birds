@@ -50,10 +50,15 @@ modo_dificil = False
 sorteador_planetas_1 = random.choice([barros, enzo]) 
 sorteador_inimigos = random.choice([ergio, guri, lucca, magno, vaz, wever, felipe_47, celao, alfredo])
 
+# Tocar música
+pygame.mixer.music.load('audios\musica_fundo.mp3')
+pygame.mixer.music.play(-1)
 
 #loop da tela inicial
 tela_jogo = True
 while tela_jogo:
+
+
     screen.blit(jelado, (0, 0))
 
     pos_mouse = pygame.mouse.get_pos()
