@@ -28,11 +28,13 @@ guri = pygame.transform.scale(guri, (65, 65))
 
 
 lucca = pygame.image.load('imagens/lucca.png')
+lucca = pygame.transform.scale(lucca, (65, 65))
 
 magno = pygame.image.load('imagens/magno.png')
+magno = pygame.transform.scale(magno, (65, 65))
 
 vaz = pygame.image.load('imagens/vaz.png')
+vaz = pygame.transform.scale(vaz, (65, 65))
 
 wever = pygame.image.load('imagens/wever.png')
-
-felipe_47 = pygame.image.load('imagens/47.png')
+wever = pygame.transform.scale(wever, (58, 58))
