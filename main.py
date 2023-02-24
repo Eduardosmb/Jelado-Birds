@@ -328,6 +328,7 @@ if modo_dificil == True:
                     inimigo_morto = True  
                     pontuacao+=1
                     tentativas = 5
+                    rodando = True
                     
 
 
