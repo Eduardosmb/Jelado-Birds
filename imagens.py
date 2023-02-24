@@ -18,11 +18,13 @@ Jelado_morreu = pygame.image.load('imagens/jelado_tela_morreu.png')
 Jelado_morreu = pygame.transform.scale(Jelado_morreu, (1024, 768))
 
 alfredo = pygame.image.load('imagens/alfredo.png')
+alfredo = pygame.transform.scale(alfredo, (58, 58))
 
 barros = pygame.image.load('imagens/barros.png')
 barros = pygame.transform.scale(barros, (50, 50))
 
 celao = pygame.image.load('imagens/celao.png')
+celao = pygame.transform.scale(celao, (58, 58))
 
 enzo = pygame.image.load('imagens/enzo.png')
 enzo = pygame.transform.scale(enzo, (50, 50))
@@ -45,3 +47,6 @@ vaz = pygame.transform.scale(vaz, (65, 65))
 
 wever = pygame.image.load('imagens/wever.png')
 wever = pygame.transform.scale(wever, (58, 58))
+
+leo = pygame.image.load('imagens/leo.png')
+leo = pygame.transform.scale(leo, (58, 58))
