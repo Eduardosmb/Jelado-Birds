@@ -16,7 +16,7 @@ FPS = 60  # Frames per Second
 #variável pra contar a pontuação do jogador
 pontuacao = 0
 #variável pra contar as tentativas do jogador
-tentativas = 100
+tentativas = 11
 #obtendo o fonte usada na pontuação
 font = pygame.font.SysFont(None, 30)
 
@@ -51,7 +51,7 @@ sorteador_planetas_1 = random.choice([barros, enzo])
 sorteador_inimigos = random.choice([ergio, guri, lucca, magno, vaz, wever, felipe_47, celao, alfredo])
 
 # Tocar música
-pygame.mixer.music.load('audios\musica_fundo.mp3')
+pygame.mixer.music.load('audios/musica_fundo.mp3')
 pygame.mixer.music.play(-1)
 
 #loop da tela inicial
@@ -332,7 +332,7 @@ if modo_dificil == True:
                 if inimigo.collidepoint(s):
                     inimigo_morto = True  
                     pontuacao+=1
-                    tentativas = 5
+                    tentativas = 10
                     rodando = True
                     
 
