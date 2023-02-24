@@ -217,7 +217,6 @@ while tela_jogo:
                     pygame.display.update()
 
         if tela_morreu == True:
-            print('aqui')
             tela_jogo_morreu = True
             while tela_jogo_morreu:
                 screen.blit(Jelado_morreu, (0, 0))
