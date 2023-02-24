@@ -47,7 +47,7 @@ modo_dificil = False
 sorteador_planetas_1 = random.choice([barros, enzo]) 
 
 # Tocar música
-pygame.mixer.music.load('audios\musica_fundo.mp3')
+pygame.mixer.music.load('audios/musica_fundo.mp3')
 pygame.mixer.music.play(-1)
 
 tela_morreu = False
