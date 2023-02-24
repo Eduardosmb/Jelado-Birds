@@ -47,7 +47,7 @@ modo_dificil = False
 
 #sorteia a foto dos personagens
 sorteador_planetas_1 = random.choice([barros, enzo]) 
-sorteador_inimigos = random.choice([ergio, guri, lucca, magno, vaz, wever, felipe_47, celao, alfredo])
+sorteador_inimigos = random.choice([ergio, guri, lucca, magno, vaz, wever, celao, alfredo])
 
 # Tocar música
 pygame.mixer.music.load('audios\musica_fundo.mp3')
@@ -186,9 +186,6 @@ while tela_jogo:
                             screen.blit(vaz, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
                         if sorteador_inimigos == wever:
                             screen.blit(wever, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                        if sorteador_inimigos == felipe_47:
-                            screen.blit(felipe_47, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                        if sorteador_inimigos == celao:
                             screen.blit(celao, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
                         if sorteador_inimigos == alfredo:
                             screen.blit(alfredo, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
@@ -341,9 +338,6 @@ while tela_jogo:
                             screen.blit(vaz, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
                         if sorteador_inimigos == wever:
                             screen.blit(wever, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                        if sorteador_inimigos == felipe_47:
-                            screen.blit(felipe_47, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                        if sorteador_inimigos == celao:
                             screen.blit(celao, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
                         if sorteador_inimigos == alfredo:
                             screen.blit(alfredo, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
