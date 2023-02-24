@@ -3,6 +3,9 @@ import pygame
 background = pygame.image.load('imagens/galaxia.png')
 background = pygame.transform.scale(background, (1024, 768))
 
+background2 = pygame.image.load('imagens/galaxia_hard.png')
+background2 = pygame.transform.scale(background2, (1024, 768))
+
 
 canhao = pygame.image.load('imagens/canhao.png')
 canhao = pygame.transform.scale(canhao, (60, 60))

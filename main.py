@@ -13,8 +13,6 @@ clock = pygame.time.Clock()
 FPS = 60  # Frames per Second
 
 
-#variável pra contar a pontuação do jogador
-pontuacao = 0
 #variável pra contar as tentativas do jogador
 #obtendo o fonte usada na pontuação
 font = pygame.font.SysFont(None, 30)
@@ -93,6 +91,8 @@ while tela_jogo:
 
     if modo_facil == True:
         tentativas = 5
+        pontuacao = 0
+
         #loop do jogo
         while rodando:
 
@@ -239,6 +239,8 @@ while tela_jogo:
 
     if modo_dificil == True:
         tentativas = 10
+        pontuacao = 0
+
 
         barros_planeta = np.array([400, 400])
         enzo_planeta = np.array([600, 300])
@@ -257,7 +259,7 @@ while tela_jogo:
                 if event.type == pygame.QUIT:
                     rodando = False
 
-            screen.blit(background, (100, 320), pygame.Rect(100, 320, 90, 90))
+            screen.blit(background2, (100, 320), pygame.Rect(100, 320, 90, 90))
             mouse_pos = pygame.mouse.get_pos()
             # Calcular ângulo entre o canhão e o mouse
             dx = mouse_pos[0] - canhao_rect.center[0]
@@ -291,7 +293,7 @@ while tela_jogo:
                     clock.tick(FPS)
 
                     # Desenhar fundo
-                    screen.blit(background, (0, 0))
+                    screen.blit(background2, (0, 0))
                     screen.blit(canhao_rot, (100, 320),canhao_rect_rot)
                     pygame.display.update()
 
