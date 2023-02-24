@@ -51,6 +51,7 @@ pygame.mixer.music.load('audios\musica_fundo.mp3')
 pygame.mixer.music.play(-1)
 
 tela_morreu = False
+teste = 0
 
 #loop da tela inicial
 tela_jogo = True
@@ -64,12 +65,14 @@ while tela_jogo:
         if event.type == pygame.QUIT:
             tela_jogo = False
             rodando = False
+            teste = 1
         if event.type == pygame.MOUSEBUTTONDOWN:
             tela_jogo = False
             pygame.display.update()
         if event.type == pygame.MOUSEBUTTONDOWN and pos_mouse[0]< 963 and pos_mouse[0]> 812 and pos_mouse[1]< 673 and pos_mouse[1]> 611:
             tela_jogo = False
             rodando = False
+            teste = 1
             pygame.display.update()
         if event.type == pygame.MOUSEBUTTONDOWN and pos_mouse[0]< 874 and pos_mouse[0]> 746 and pos_mouse[1]< 539 and pos_mouse[1]> 490:
             tela_jogo = False
@@ -81,7 +84,7 @@ while tela_jogo:
             modo_dificil = True
             pygame.display.update()
 
-        elif modo_dificil ==  False and modo_facil == False:
+        elif modo_dificil ==  False and modo_facil == False and teste == 0:
             tela_jogo = True
 
     pygame.display.update()
@@ -91,7 +94,6 @@ while tela_jogo:
     if modo_facil == True:
         tentativas = 5
         pontuacao = 0
-
         #loop do jogo
         while rodando:
 
@@ -112,7 +114,6 @@ while tela_jogo:
             # Desenhar imagem rotacionada do canhão na tela
             screen.blit(canhao_rot, (100, 320),canhao_rect_rot)
             pygame.display.update()
-
 
             #evento so acontecer quando clicar com o mouse
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -259,7 +260,7 @@ while tela_jogo:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     rodando = False
-
+            
             screen.blit(background2, (100, 320), pygame.Rect(100, 320, 90, 90))
             mouse_pos = pygame.mouse.get_pos()
             # Calcular ângulo entre o canhão e o mouse
@@ -375,7 +376,6 @@ while tela_jogo:
                     pygame.display.update()
 
         if tela_morreu == True:
-            print('aqui')
             tela_jogo_morreu = True
             while tela_jogo_morreu:
                 screen.blit(Jelado_morreu, (0, 0))
