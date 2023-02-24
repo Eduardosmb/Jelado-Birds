@@ -45,7 +45,6 @@ modo_dificil = False
 
 #sorteia a foto dos personagens
 sorteador_planetas_1 = random.choice([barros, enzo]) 
-sorteador_inimigos = random.choice([ergio, guri, lucca, magno, vaz, wever, celao, alfredo])
 
 # Tocar música
 pygame.mixer.music.load('audios\musica_fundo.mp3')
@@ -161,7 +160,7 @@ while tela_jogo:
                         posicao_inimigo = (random.randint(500, 1020), random.randint(100, 700))
 
                         #sortea novo inimigo
-                        sorteador_inimigos = random.choice([ergio, guri])
+                        sorteador_inimigos = random.choice([ergio, guri, lucca, magno, vaz, wever, celao, alfredo, leo])
 
                         #declara estado do inimigo como vivo
                         inimigo_morto = False
@@ -179,16 +178,19 @@ while tela_jogo:
                             screen.blit(guri, (posicao_inimigo[0]-33, posicao_inimigo[1]-45))
 
                         if sorteador_inimigos == lucca:
-                            screen.blit(lucca, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                            screen.blit(lucca, (posicao_inimigo[0]-33, posicao_inimigo[1]-45))
                         if sorteador_inimigos == magno:
-                            screen.blit(magno, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                            screen.blit(magno, (posicao_inimigo[0]-33, posicao_inimigo[1]-45))
                         if sorteador_inimigos == vaz:
-                            screen.blit(vaz, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                            screen.blit(vaz, (posicao_inimigo[0]-33, posicao_inimigo[1]-45))
                         if sorteador_inimigos == wever:
                             screen.blit(wever, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                        if sorteador_inimigos == celao:
                             screen.blit(celao, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
                         if sorteador_inimigos == alfredo:
                             screen.blit(alfredo, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                        if sorteador_inimigos == leo:
+                            screen.blit(leo, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
 
 
 
@@ -315,7 +317,7 @@ while tela_jogo:
                         posicao_inimigo = (random.randint(500, 1020), random.randint(100, 700))
 
                         #sortea novo inimigo
-                        sorteador_inimigos = random.choice([ergio, guri])
+                        sorteador_inimigos = random.choice([ergio, guri, lucca, magno, vaz, wever, celao, alfredo, leo])
 
                         #declara estado do inimigo como vivo
                         inimigo_morto = False
@@ -333,16 +335,19 @@ while tela_jogo:
                             screen.blit(guri, (posicao_inimigo[0]-33, posicao_inimigo[1]-45))
 
                         if sorteador_inimigos == lucca:
-                            screen.blit(lucca, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                            screen.blit(lucca, (posicao_inimigo[0]-33, posicao_inimigo[1]-45))
                         if sorteador_inimigos == magno:
-                            screen.blit(magno, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                            screen.blit(magno, (posicao_inimigo[0]-33, posicao_inimigo[1]-45))
                         if sorteador_inimigos == vaz:
-                            screen.blit(vaz, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                            screen.blit(vaz, (posicao_inimigo[0]-33, posicao_inimigo[1]-45))
                         if sorteador_inimigos == wever:
                             screen.blit(wever, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                        if sorteador_inimigos == celao:
                             screen.blit(celao, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
                         if sorteador_inimigos == alfredo:
                             screen.blit(alfredo, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                        if sorteador_inimigos == leo:
+                            screen.blit(leo, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
 
 
 
@@ -388,5 +393,3 @@ while tela_jogo:
                     pygame.display.update()
             # Atualizar tela
             pygame.display.update()
-
-
