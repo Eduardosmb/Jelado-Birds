@@ -16,7 +16,6 @@ FPS = 60  # Frames per Second
 #variável pra contar a pontuação do jogador
 pontuacao = 0
 #variável pra contar as tentativas do jogador
-tentativas = 11
 #obtendo o fonte usada na pontuação
 font = pygame.font.SysFont(None, 30)
 
@@ -51,8 +50,10 @@ sorteador_planetas_1 = random.choice([barros, enzo])
 sorteador_inimigos = random.choice([ergio, guri, lucca, magno, vaz, wever, felipe_47, celao, alfredo])
 
 # Tocar música
-pygame.mixer.music.load('audios/musica_fundo.mp3')
+pygame.mixer.music.load('audios\musica_fundo.mp3')
 pygame.mixer.music.play(-1)
+
+tela_morreu = False
 
 #loop da tela inicial
 tela_jogo = True
@@ -90,265 +91,306 @@ while tela_jogo:
 
 
 
-if modo_facil == True:
-    #loop do jogo
-    while rodando:
+    if modo_facil == True:
+        tentativas = 5
+        #loop do jogo
+        while rodando:
 
-        # Capturar eventos
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                rodando = False
+            # Capturar eventos
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    rodando = False
 
-        screen.blit(background, (100, 320), pygame.Rect(100, 320, 90, 90))
-        mouse_pos = pygame.mouse.get_pos()
-        # Calcular ângulo entre o canhão e o mouse
-        dx = mouse_pos[0] - canhao_rect.center[0]
-        dy = mouse_pos[1] - canhao_rect.center[1]
-        angle = np.degrees(np.arctan2(-dy, dx))
-        # Rotacionar imagem do canhão para o ângulo calculado
-        canhao_rot = pygame.transform.rotate(canhao, angle)
-        canhao_rect_rot = canhao_rot.get_rect(center=canhao_rect.center)
-        # Desenhar imagem rotacionada do canhão na tela
-        screen.blit(canhao_rot, (100, 320),canhao_rect_rot)
-        pygame.display.update()
+            screen.blit(background, (100, 320), pygame.Rect(100, 320, 90, 90))
+            mouse_pos = pygame.mouse.get_pos()
+            # Calcular ângulo entre o canhão e o mouse
+            dx = mouse_pos[0] - canhao_rect.center[0]
+            dy = mouse_pos[1] - canhao_rect.center[1]
+            angle = np.degrees(np.arctan2(-dy, dx))
+            # Rotacionar imagem do canhão para o ângulo calculado
+            canhao_rot = pygame.transform.rotate(canhao, angle)
+            canhao_rect_rot = canhao_rot.get_rect(center=canhao_rect.center)
+            # Desenhar imagem rotacionada do canhão na tela
+            screen.blit(canhao_rot, (100, 320),canhao_rect_rot)
+            pygame.display.update()
 
 
-        #evento so acontecer quando clicar com o mouse
-        if event.type == pygame.MOUSEBUTTONDOWN:
+            #evento so acontecer quando clicar com o mouse
+            if event.type == pygame.MOUSEBUTTONDOWN:
 
-            if tentativas < 2:
-                rodando = False
-            else:
-                tentativas -= 1
-
-            while True:
-                if s[0]<0 or s[0]>1024 or s[1]<0 or s[1]>768: # Se eu chegar ao limite da tela, reinicio a posição do personagem
-                    v0 = (pygame.mouse.get_pos() - s0)
-                    v0 = v0 / np.linalg.norm(v0) * 100
-                    v0 = v0 + 3*np.random.randn(2)
-                    s, v = s0, v0
+                if tentativas < 1:
+                    modo_facil = False
+                    tela_morreu = True
                     break
+                else:
+                    tentativas -= 1
 
-                # Controlar frame rate
-                clock.tick(FPS)          
+                while True:
+                    if s[0]<0 or s[0]>1024 or s[1]<0 or s[1]>768: # Se eu chegar ao limite da tela, reinicio a posição do personagem
+                        v0 = (pygame.mouse.get_pos() - s0)
+                        v0 = v0 / np.linalg.norm(v0) * 100
+                        v0 = v0 + 3*np.random.randn(2)
+                        s, v = s0, v0
+                        break
 
-
-                C = 20000 # constante gravitacional * massa planeta
-                direcao_a = planeta - s
-                d = np.linalg.norm(direcao_a)
-                direcao_a = direcao_a / d
-                mag_a = C / d**2
-                a = direcao_a * mag_a
-                v = v + a
-                s = s + 0.25 * v
-
-                # Desenhar fundo
-                screen.blit(background, (0, 0))
-                screen.blit(canhao_rot, (100, 320),canhao_rect_rot)
+                    # Controlar frame rate
+                    clock.tick(FPS)          
 
 
+                    C = 20000 # constante gravitacional * massa planeta
+                    direcao_a = planeta - s
+                    d = np.linalg.norm(direcao_a)
+                    direcao_a = direcao_a / d
+                    mag_a = C / d**2
+                    a = direcao_a * mag_a
+                    v = v + a
+                    s = s + 0.25 * v
 
-                rect = pygame.Rect(s, (10, 10))
-                screen.blit(personagem, rect)
-                planet = pygame.draw.circle(screen, "red", planeta, 20, 20)
-
-                if inimigo_morto == True:
-                    #sorteia nova posição do inimigo
-                    posicao_inimigo = (random.randint(500, 1020), random.randint(100, 700))
-
-                    #sortea novo inimigo
-                    sorteador_inimigos = random.choice([ergio, guri])
-
-                    #declara estado do inimigo como vivo
-                    inimigo_morto = False
-
-                if inimigo_morto == False:
-                    # screen.blit(inimigo, posicao_inimigo)
-                    inimigo = pygame.draw.circle(screen, "green", posicao_inimigo, 20, 20)
-
-                    #feito
-                    if sorteador_inimigos == ergio:
-                        screen.blit(ergio, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-
-                    #Feito
-                    if sorteador_inimigos == guri:
-                        screen.blit(guri, (posicao_inimigo[0]-33, posicao_inimigo[1]-45))
-
-                    if sorteador_inimigos == lucca:
-                        screen.blit(lucca, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                    if sorteador_inimigos == magno:
-                        screen.blit(magno, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                    if sorteador_inimigos == vaz:
-                        screen.blit(vaz, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                    if sorteador_inimigos == wever:
-                        screen.blit(wever, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                    if sorteador_inimigos == felipe_47:
-                        screen.blit(felipe_47, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                    if sorteador_inimigos == celao:
-                        screen.blit(celao, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                    if sorteador_inimigos == alfredo:
-                        screen.blit(alfredo, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                    
-
-                
-                if inimigo.collidepoint(s):
-                    inimigo_morto = True  
-                    pontuacao+=1
-                    tentativas = 5
-                    rodando = True
-                    
-
-
-                #blitando a pontuação na tela
-                text = font.render('Pontos:' + str(pontuacao), False, (255,255,255))
-                textRect = text.get_rect()
-                textRect.center = (100, 100)
-                screen.blit(text, textRect)
-                text_tentativas = font.render('Tentativas:' + str(tentativas), False, (255,255,255))
-                textRect_tentativas = text_tentativas.get_rect()
-                textRect_tentativas.center = (100, 150)
-                screen.blit(text_tentativas, textRect_tentativas)
-
-                #blitando skins dos planetas
-                screen.blit(sorteador_planetas_1, ([pos[0]-525, pos[1]-390]))
-
-
-                # Atualizar tela
-                pygame.display.update()
-
-
-    # Terminar tela
-    pygame.quit()
+                    # Desenhar fundo
+                    screen.blit(background, (0, 0))
+                    screen.blit(canhao_rot, (100, 320),canhao_rect_rot)
 
 
 
-if modo_dificil == True:
+                    rect = pygame.Rect(s, (10, 10))
+                    screen.blit(personagem, rect)
+                    planet = pygame.draw.circle(screen, "red", planeta, 20, 20)
 
-    barros_planeta = np.array([400, 400])
-    enzo_planeta = np.array([600, 300])
+                    if inimigo_morto == True:
+                        #sorteia nova posição do inimigo
+                        posicao_inimigo = (random.randint(500, 1020), random.randint(100, 700))
 
-    def gravidade(constante, planeta):
-        direcao_a = planeta - s # constante gravitacional * massa planeta
-        d = np.linalg.norm(direcao_a)
-        direcao_a = direcao_a / d
-        mag_a = constante / d**2
-        a = direcao_a * mag_a
-        return a
-    
-    while rodando:
-        # Capturar eventos
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                rodando = False
+                        #sortea novo inimigo
+                        sorteador_inimigos = random.choice([ergio, guri])
 
-        screen.blit(background, (100, 320), pygame.Rect(100, 320, 90, 90))
-        mouse_pos = pygame.mouse.get_pos()
-        # Calcular ângulo entre o canhão e o mouse
-        dx = mouse_pos[0] - canhao_rect.center[0]
-        dy = mouse_pos[1] - canhao_rect.center[1]
-        angle = np.degrees(np.arctan2(-dy, dx))
-        # Rotacionar imagem do canhão para o ângulo calculado
-        canhao_rot = pygame.transform.rotate(canhao, angle)
-        canhao_rect_rot = canhao_rot.get_rect(center=canhao_rect.center)
-        # Desenhar imagem rotacionada do canhão na tela
-        screen.blit(canhao_rot, (100, 320),canhao_rect_rot)
-        pygame.display.update()
+                        #declara estado do inimigo como vivo
+                        inimigo_morto = False
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if tentativas < 2:
-                rodando = False
-            else:
-                tentativas -= 1
+                    if inimigo_morto == False:
+                        # screen.blit(inimigo, posicao_inimigo)
+                        inimigo = pygame.draw.circle(screen, "green", posicao_inimigo, 20, 20)
 
-            while True:
-                # Capturar eventos
-                if s[0]<5 or s[0]>pos[0] or s[1]<5 or s[1]>pos[1]: # Se eu chegar ao limite da tela, reinicio a posição do personagem
-                    v0 = (pygame.mouse.get_pos() - s0)
-                    v0 = v0 / np.linalg.norm(v0) * 100
-                    v0 = v0 + 3 * np.random.randn(2)
-                    s, v = s0, v0
+                        #feito
+                        if sorteador_inimigos == ergio:
+                            screen.blit(ergio, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+
+                        #Feito
+                        if sorteador_inimigos == guri:
+                            screen.blit(guri, (posicao_inimigo[0]-33, posicao_inimigo[1]-45))
+
+                        if sorteador_inimigos == lucca:
+                            screen.blit(lucca, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                        if sorteador_inimigos == magno:
+                            screen.blit(magno, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                        if sorteador_inimigos == vaz:
+                            screen.blit(vaz, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                        if sorteador_inimigos == wever:
+                            screen.blit(wever, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                        if sorteador_inimigos == felipe_47:
+                            screen.blit(felipe_47, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                        if sorteador_inimigos == celao:
+                            screen.blit(celao, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                        if sorteador_inimigos == alfredo:
+                            screen.blit(alfredo, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+
+
+
+                    if inimigo.collidepoint(s):
+                        inimigo_morto = True  
+                        pontuacao+=1
+                        tentativas = 5
+                        rodando = True
+
+
+
+                    #blitando a pontuação na tela
+                    text = font.render('Pontos:' + str(pontuacao), False, (255,255,255))
+                    textRect = text.get_rect()
+                    textRect.center = (100, 100)
+                    screen.blit(text, textRect)
+                    text_tentativas = font.render('Tentativas:' + str(tentativas), False, (255,255,255))
+                    textRect_tentativas = text_tentativas.get_rect()
+                    textRect_tentativas.center = (100, 150)
+                    screen.blit(text_tentativas, textRect_tentativas)
+
+                    #blitando skins dos planetas
+                    screen.blit(sorteador_planetas_1, ([pos[0]-525, pos[1]-390]))
+                    pygame.display.update()
+
+        if tela_morreu == True:
+            print('aqui')
+            tela_jogo_morreu = True
+            while tela_jogo_morreu:
+                screen.blit(Jelado_morreu, (0, 0))
+                pos_mouse = pygame.mouse.get_pos()
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        tela_jogo_morreu = False
+                        rodando = False
+                    if event.type == pygame.MOUSEBUTTONDOWN and pos_mouse[0]< 835 and pos_mouse[0]> 538 and pos_mouse[1]< 674 and pos_mouse[1]> 601:
+                        tela_jogo_morreu = False
+                        tela_jogo = True
+                        modo_facil = False
+                        pygame.display.update()
+                    pygame.display.update()
+            # Atualizar tela
+            pygame.display.update()
+
+
+
+
+
+    if modo_dificil == True:
+        tentativas = 10
+
+        barros_planeta = np.array([400, 400])
+        enzo_planeta = np.array([600, 300])
+
+        def gravidade(constante, planeta):
+            direcao_a = planeta - s # constante gravitacional * massa planeta
+            d = np.linalg.norm(direcao_a)
+            direcao_a = direcao_a / d
+            mag_a = constante / d**2
+            a = direcao_a * mag_a
+            return a
+
+        while rodando:
+            # Capturar eventos
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    rodando = False
+
+            screen.blit(background, (100, 320), pygame.Rect(100, 320, 90, 90))
+            mouse_pos = pygame.mouse.get_pos()
+            # Calcular ângulo entre o canhão e o mouse
+            dx = mouse_pos[0] - canhao_rect.center[0]
+            dy = mouse_pos[1] - canhao_rect.center[1]
+            angle = np.degrees(np.arctan2(-dy, dx))
+            # Rotacionar imagem do canhão para o ângulo calculado
+            canhao_rot = pygame.transform.rotate(canhao, angle)
+            canhao_rect_rot = canhao_rot.get_rect(center=canhao_rect.center)
+            # Desenhar imagem rotacionada do canhão na tela
+            screen.blit(canhao_rot, (100, 320),canhao_rect_rot)
+            pygame.display.update()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if tentativas < 1:
+                    modo_dificil = False
+                    tela_morreu = True
                     break
+                else:
+                    tentativas -= 1
 
-                # Controlar frame rate
-                clock.tick(FPS)
+                while True:
+                    # Capturar eventos
+                    if s[0]<5 or s[0]>pos[0] or s[1]<5 or s[1]>pos[1]: # Se eu chegar ao limite da tela, reinicio a posição do personagem
+                        v0 = (pygame.mouse.get_pos() - s0)
+                        v0 = v0 / np.linalg.norm(v0) * 100
+                        v0 = v0 + 3 * np.random.randn(2)
+                        s, v = s0, v0
+                        break
 
-                # Desenhar fundo
-                screen.blit(background, (0, 0))
-                screen.blit(canhao_rot, (100, 320),canhao_rect_rot)
-                pygame.display.update()
+                    # Controlar frame rate
+                    clock.tick(FPS)
 
-                # Processar posicoes
-                ac_barros = gravidade(40000, barros_planeta)
-                ac_enzo = gravidade(70000, enzo_planeta)
-                a = ac_barros + ac_enzo
-                v = v + a
-                s = s + 0.25 * v
+                    # Desenhar fundo
+                    screen.blit(background, (0, 0))
+                    screen.blit(canhao_rot, (100, 320),canhao_rect_rot)
+                    pygame.display.update()
 
-                # Desenhar personagem
-                rect = pygame.Rect(s, (10, 10))  # First tuple is position, second is size.
-                screen.blit(personagem, rect)
-                planet = pygame.draw.circle(screen, "red", barros_planeta, 20, 20)
-                planet2 = pygame.draw.circle(screen, "blue", enzo_planeta , 20, 20)
+                    # Processar posicoes
+                    ac_barros = gravidade(40000, barros_planeta)
+                    ac_enzo = gravidade(70000, enzo_planeta)
+                    a = ac_barros + ac_enzo
+                    v = v + a
+                    s = s + 0.25 * v
 
-                if inimigo_morto == True:
-                    #sorteia nova posição do inimigo
-                    posicao_inimigo = (random.randint(500, 1020), random.randint(100, 700))
+                    # Desenhar personagem
+                    rect = pygame.Rect(s, (10, 10))  # First tuple is position, second is size.
+                    screen.blit(personagem, rect)
+                    planet = pygame.draw.circle(screen, "red", barros_planeta, 20, 20)
+                    planet2 = pygame.draw.circle(screen, "blue", enzo_planeta , 20, 20)
 
-                    #sortea novo inimigo
-                    sorteador_inimigos = random.choice([ergio, guri])
+                    if inimigo_morto == True:
+                        #sorteia nova posição do inimigo
+                        posicao_inimigo = (random.randint(500, 1020), random.randint(100, 700))
 
-                    #declara estado do inimigo como vivo
-                    inimigo_morto = False
+                        #sortea novo inimigo
+                        sorteador_inimigos = random.choice([ergio, guri])
 
-                if inimigo_morto == False:
-                    # screen.blit(inimigo, posicao_inimigo)
-                    inimigo = pygame.draw.circle(screen, "green", posicao_inimigo, 20, 20)
+                        #declara estado do inimigo como vivo
+                        inimigo_morto = False
 
-                    #feito
-                    if sorteador_inimigos == ergio:
-                        screen.blit(ergio, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                    if inimigo_morto == False:
+                        # screen.blit(inimigo, posicao_inimigo)
+                        inimigo = pygame.draw.circle(screen, "green", posicao_inimigo, 20, 20)
 
-                    #Feito
-                    if sorteador_inimigos == guri:
-                        screen.blit(guri, (posicao_inimigo[0]-33, posicao_inimigo[1]-45))
+                        #feito
+                        if sorteador_inimigos == ergio:
+                            screen.blit(ergio, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
 
-                    if sorteador_inimigos == lucca:
-                        screen.blit(lucca, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                    if sorteador_inimigos == magno:
-                        screen.blit(magno, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                    if sorteador_inimigos == vaz:
-                        screen.blit(vaz, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                    if sorteador_inimigos == wever:
-                        screen.blit(wever, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                    if sorteador_inimigos == felipe_47:
-                        screen.blit(felipe_47, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                    if sorteador_inimigos == celao:
-                        screen.blit(celao, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                    if sorteador_inimigos == alfredo:
-                        screen.blit(alfredo, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-                    
+                        #Feito
+                        if sorteador_inimigos == guri:
+                            screen.blit(guri, (posicao_inimigo[0]-33, posicao_inimigo[1]-45))
 
-                
-                if inimigo.collidepoint(s):
-                    inimigo_morto = True  
-                    pontuacao+=1
-                    tentativas = 10
-                    rodando = True
-                    
-
-
-                #blitando a pontuação na tela
-                text = font.render('Pontos:' + str(pontuacao), False, (255,255,255))
-                textRect = text.get_rect()
-                textRect.center = (100, 100)
-                screen.blit(text, textRect)
-                text_tentativas = font.render('Tentativas:' + str(tentativas), False, (255,255,255))
-                textRect_tentativas = text_tentativas.get_rect()
-                textRect_tentativas.center = (100, 150)
-                screen.blit(text_tentativas, textRect_tentativas)
+                        if sorteador_inimigos == lucca:
+                            screen.blit(lucca, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                        if sorteador_inimigos == magno:
+                            screen.blit(magno, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                        if sorteador_inimigos == vaz:
+                            screen.blit(vaz, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                        if sorteador_inimigos == wever:
+                            screen.blit(wever, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                        if sorteador_inimigos == felipe_47:
+                            screen.blit(felipe_47, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                        if sorteador_inimigos == celao:
+                            screen.blit(celao, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
+                        if sorteador_inimigos == alfredo:
+                            screen.blit(alfredo, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
 
 
-                screen.blit(barros, ([pos[0]-448, pos[1]-490]))
-                screen.blit(enzo, ([pos[0]-650, pos[1]-390]))
-                # Update!
-                pygame.display.update()
+
+                    if inimigo.collidepoint(s):
+                        inimigo_morto = True  
+                        pontuacao+=1
+                        tentativas = 10
+                        rodando = True
+
+
+
+                    #blitando a pontuação na tela
+                    text = font.render('Pontos:' + str(pontuacao), False, (255,255,255))
+                    textRect = text.get_rect()
+                    textRect.center = (100, 100)
+                    screen.blit(text, textRect)
+                    text_tentativas = font.render('Tentativas:' + str(tentativas), False, (255,255,255))
+                    textRect_tentativas = text_tentativas.get_rect()
+                    textRect_tentativas.center = (100, 150)
+                    screen.blit(text_tentativas, textRect_tentativas)
+
+
+                    screen.blit(barros, ([pos[0]-448, pos[1]-490]))
+                    screen.blit(enzo, ([pos[0]-650, pos[1]-390]))
+                    # Update!
+                    pygame.display.update()
+
+        if tela_morreu == True:
+            print('aqui')
+            tela_jogo_morreu = True
+            while tela_jogo_morreu:
+                screen.blit(Jelado_morreu, (0, 0))
+                pos_mouse = pygame.mouse.get_pos()
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        tela_jogo_morreu = False
+                        rodando = False
+                    if event.type == pygame.MOUSEBUTTONDOWN and pos_mouse[0]< 835 and pos_mouse[0]> 538 and pos_mouse[1]< 674 and pos_mouse[1]> 601:
+                        tela_jogo_morreu = False
+                        tela_jogo = True
+                        modo_facil = False
+                        pygame.display.update()
+                    pygame.display.update()
+            # Atualizar tela
+            pygame.display.update()
+
+
