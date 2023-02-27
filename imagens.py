@@ -1,5 +1,8 @@
+#importa pygame
 import pygame
 
+
+#carrega todas as imagens e define os tamanhos
 background = pygame.image.load('imagens/galaxia.png')
 background = pygame.transform.scale(background, (1024, 768))
 
