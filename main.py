@@ -1,9 +1,12 @@
+#Faz osimpots
 import math
 import pygame 
 import numpy as np
 import random
 from imagens import *
 
+
+#inicia o pygame
 pygame.init()
 
 # Tamanho da tela e definição do FPS
@@ -13,7 +16,6 @@ clock = pygame.time.Clock()
 FPS = 60  # Frames per Second
 
 
-#variável pra contar as tentativas do jogador
 #obtendo o fonte usada na pontuação
 font = pygame.font.SysFont(None, 30)
 
@@ -34,6 +36,7 @@ personagem.fill(COR_PERSONAGEM)  # Cor do personagem
 
 #detector de colisão
 inimigo_morto = True
+
 #loop do jogo
 rodando = True
 
@@ -50,48 +53,60 @@ sorteador_planetas_1 = random.choice([barros, enzo])
 pygame.mixer.music.load('audios/musica_fundo.mp3')
 pygame.mixer.music.play(-1)
 
+
 tela_morreu = False
-teste = 0
+
+#Variavel para definir se o jogo irá fechar ou não
 
 #loop da tela inicial
 tela_jogo = True
 while tela_jogo:
 
-
+    # Desenha o background do jogo
     screen.blit(jelado, (0, 0))
 
+    #PEga a posição do mouse para verificar onde o usuário clicou
     pos_mouse = pygame.mouse.get_pos()
     for event in pygame.event.get():
+        #Sai do jogo
         if event.type == pygame.QUIT:
             tela_jogo = False
             rodando = False
             teste = 1
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             tela_jogo = False
             pygame.display.update()
+
+        #Verifica se o usuário clicou no botão sair
         if event.type == pygame.MOUSEBUTTONDOWN and pos_mouse[0]< 963 and pos_mouse[0]> 812 and pos_mouse[1]< 673 and pos_mouse[1]> 611:
             tela_jogo = False
             rodando = False
             teste = 1
             pygame.display.update()
+
+        #Verifica se o usuário clicou no botão modo fácil
         if event.type == pygame.MOUSEBUTTONDOWN and pos_mouse[0]< 874 and pos_mouse[0]> 746 and pos_mouse[1]< 539 and pos_mouse[1]> 490:
             tela_jogo = False
             modo_facil = True
             pygame.display.update()
 
+        #Verifica se o usuário clicou no botão modo difícil
         if event.type == pygame.MOUSEBUTTONDOWN and pos_mouse[0]< 1011 and pos_mouse[0]> 890 and pos_mouse[1]< 539 and pos_mouse[1]> 486:
             tela_jogo = False
             modo_dificil = True
             pygame.display.update()
 
+        #Caso nada foi clicado, o jogo continua na tela inicial
         elif modo_dificil ==  False and modo_facil == False and teste == 0:
             tela_jogo = True
 
     pygame.display.update()
 
 
-
+    #loop do jogo
     if modo_facil == True:
+        #variaveis que definem a pontuação e as tentativas
         tentativas = 5
         pontuacao = 0
         #loop do jogo
@@ -102,6 +117,7 @@ while tela_jogo:
                 if event.type == pygame.QUIT:
                     rodando = False
 
+            # Desenha o angulo do canhao no background
             screen.blit(background, (100, 320), pygame.Rect(100, 320, 90, 90))
             mouse_pos = pygame.mouse.get_pos()
             # Calcular ângulo entre o canhão e o mouse
@@ -117,7 +133,8 @@ while tela_jogo:
 
             #evento so acontecer quando clicar com o mouse
             if event.type == pygame.MOUSEBUTTONDOWN:
-
+                
+                #Caso o jogador tenha perdido todas as tentativas, o jogo define tela_morreu como True
                 if tentativas < 1:
                     modo_facil = False
                     tela_morreu = True
@@ -137,6 +154,7 @@ while tela_jogo:
                     clock.tick(FPS)          
 
 
+                    #calcula gravidade do atrator gravitacional
                     C = 20000 # constante gravitacional * massa planeta
                     direcao_a = planeta - s
                     d = np.linalg.norm(direcao_a)
@@ -151,7 +169,7 @@ while tela_jogo:
                     screen.blit(canhao_rot, (100, 320),canhao_rect_rot)
 
 
-
+                    #Desenha o tiro
                     rect = pygame.Rect(s, (10, 10))
                     screen.blit(personagem, rect)
                     planet = pygame.draw.circle(screen, "red", planeta, 20, 20)
@@ -170,14 +188,10 @@ while tela_jogo:
                         # screen.blit(inimigo, posicao_inimigo)
                         inimigo = pygame.draw.circle(screen, "green", posicao_inimigo, 20, 20)
 
-                        #feito
                         if sorteador_inimigos == ergio:
                             screen.blit(ergio, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-
-                        #Feito
                         if sorteador_inimigos == guri:
                             screen.blit(guri, (posicao_inimigo[0]-33, posicao_inimigo[1]-45))
-
                         if sorteador_inimigos == lucca:
                             screen.blit(lucca, (posicao_inimigo[0]-33, posicao_inimigo[1]-45))
                         if sorteador_inimigos == magno:
@@ -194,7 +208,7 @@ while tela_jogo:
                             screen.blit(leo, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
 
 
-
+                    #Caso haja colisão entre o tiro e o inimigo, o inimigo morre, jogador ganha 1 ponto e as tentativas são resetadas
                     if inimigo.collidepoint(s):
                         inimigo_morto = True  
                         pontuacao+=1
@@ -203,7 +217,7 @@ while tela_jogo:
 
 
 
-                    #blitando a pontuação na tela
+                    #blitando a pontuação e as tentativas na tela
                     text = font.render('Pontos:' + str(pontuacao), False, (255,255,255))
                     textRect = text.get_rect()
                     textRect.center = (100, 100)
@@ -217,6 +231,7 @@ while tela_jogo:
                     screen.blit(sorteador_planetas_1, ([pos[0]-525, pos[1]-390]))
                     pygame.display.update()
 
+        #Loop tela game over
         if tela_morreu == True:
             tela_jogo_morreu = True
             while tela_jogo_morreu:
@@ -226,6 +241,7 @@ while tela_jogo:
                     if event.type == pygame.QUIT:
                         tela_jogo_morreu = False
                         rodando = False
+                    #Volta para o menu
                     if event.type == pygame.MOUSEBUTTONDOWN and pos_mouse[0]< 835 and pos_mouse[0]> 538 and pos_mouse[1]< 674 and pos_mouse[1]> 601:
                         tela_jogo_morreu = False
                         tela_jogo = True
@@ -238,15 +254,16 @@ while tela_jogo:
 
 
 
-
+    #loop tela modo difícil
     if modo_dificil == True:
         tentativas = 10
         pontuacao = 0
 
-
+        # definindo posicoes dos atratores gravitacionais
         barros_planeta = np.array([400, 400])
         enzo_planeta = np.array([600, 300])
 
+        #Função que calcula a força gravitacional
         def gravidade(constante, planeta):
             direcao_a = planeta - s # constante gravitacional * massa planeta
             d = np.linalg.norm(direcao_a)
@@ -261,6 +278,7 @@ while tela_jogo:
                 if event.type == pygame.QUIT:
                     rodando = False
             
+            #Desenha o angulo do canhao no background
             screen.blit(background2, (100, 320), pygame.Rect(100, 320, 90, 90))
             mouse_pos = pygame.mouse.get_pos()
             # Calcular ângulo entre o canhão e o mouse
@@ -299,7 +317,7 @@ while tela_jogo:
                     screen.blit(canhao_rot, (100, 320),canhao_rect_rot)
                     pygame.display.update()
 
-                    # Processar posicoes
+                    # Processar gravidade e as posicoes 
                     ac_barros = gravidade(40000, barros_planeta)
                     ac_enzo = gravidade(70000, enzo_planeta)
                     a = ac_barros + ac_enzo
@@ -325,15 +343,10 @@ while tela_jogo:
                     if inimigo_morto == False:
                         # screen.blit(inimigo, posicao_inimigo)
                         inimigo = pygame.draw.circle(screen, "green", posicao_inimigo, 20, 20)
-
-                        #feito
                         if sorteador_inimigos == ergio:
                             screen.blit(ergio, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
-
-                        #Feito
                         if sorteador_inimigos == guri:
                             screen.blit(guri, (posicao_inimigo[0]-33, posicao_inimigo[1]-45))
-
                         if sorteador_inimigos == lucca:
                             screen.blit(lucca, (posicao_inimigo[0]-33, posicao_inimigo[1]-45))
                         if sorteador_inimigos == magno:
@@ -350,7 +363,7 @@ while tela_jogo:
                             screen.blit(leo, (posicao_inimigo[0]-29, posicao_inimigo[1]-31))
 
 
-
+                    #Verifica se o personagem colidiu com o inimigo e atualiza a pontuação e as tentativas
                     if inimigo.collidepoint(s):
                         inimigo_morto = True  
                         pontuacao+=1
@@ -359,7 +372,7 @@ while tela_jogo:
 
 
 
-                    #blitando a pontuação na tela
+                    #blitando a pontuação e as tentativas na tela
                     text = font.render('Pontos:' + str(pontuacao), False, (255,255,255))
                     textRect = text.get_rect()
                     textRect.center = (100, 100)
@@ -369,12 +382,14 @@ while tela_jogo:
                     textRect_tentativas.center = (100, 150)
                     screen.blit(text_tentativas, textRect_tentativas)
 
-
+                    #desenhando os planetas
                     screen.blit(barros, ([pos[0]-448, pos[1]-490]))
                     screen.blit(enzo, ([pos[0]-650, pos[1]-390]))
                     # Update!
                     pygame.display.update()
 
+
+        # Loop Tela de Game over
         if tela_morreu == True:
             tela_jogo_morreu = True
             while tela_jogo_morreu:
