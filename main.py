@@ -57,7 +57,7 @@ pygame.mixer.music.play(-1)
 tela_morreu = False
 
 #Variavel para definir se o jogo irá fechar ou não
-
+teste = 0
 #loop da tela inicial
 tela_jogo = True
 while tela_jogo:
